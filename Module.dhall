@@ -32,6 +32,7 @@ in  { Type =
         , steps : List Step.Type
         , commands : List Command.Type
         , dependencies : List Dependency.Type
+        , removable : Bool
         }
     , default =
         { version = None Text
@@ -42,5 +43,6 @@ in  { Type =
         , steps = [] : List Step.Type
         , commands = [] : List Command.Type
         , dependencies = [] : List Dependency.Type
+        , removable = False
         }
     }

@@ -14,5 +14,7 @@
 , Step = ./Step.dhall
 , Command = ./Command.dhall
 , Dependency = ./Dependency.dhall
+, RemovalStep = ./RemovalStep.dhall
+, Removal = ./Removal.dhall
 , Module = ./Module.dhall
 }

@@ -22,6 +22,8 @@ let Command = ./Command.dhall
 
 let Dependency = ./Dependency.dhall
 
+let Removal = ./Removal.dhall
+
 in  { Type =
         { name : Text
         , version : Optional Text
@@ -32,7 +34,7 @@ in  { Type =
         , steps : List Step.Type
         , commands : List Command.Type
         , dependencies : List Dependency.Type
-        , removable : Bool
+        , removal : Optional Removal.Type
         }
     , default =
         { version = None Text
@@ -43,6 +45,6 @@ in  { Type =
         , steps = [] : List Step.Type
         , commands = [] : List Command.Type
         , dependencies = [] : List Dependency.Type
-        , removable = False
+        , removal = None Removal.Type
         }
     }

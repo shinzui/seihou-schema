@@ -17,4 +17,5 @@
 , RemovalStep = ./RemovalStep.dhall
 , Removal = ./Removal.dhall
 , Module = ./Module.dhall
+, Recipe = ./Recipe.dhall
 }

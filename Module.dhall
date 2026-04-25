@@ -24,6 +24,8 @@ let Dependency = ./Dependency.dhall
 
 let Removal = ./Removal.dhall
 
+let Migration = ./Migration.dhall
+
 in  { Type =
         { name : Text
         , version : Optional Text
@@ -35,6 +37,7 @@ in  { Type =
         , commands : List Command.Type
         , dependencies : List Dependency.Type
         , removal : Optional Removal.Type
+        , migrations : List Migration.Type
         }
     , default =
         { version = None Text
@@ -46,5 +49,6 @@ in  { Type =
         , commands = [] : List Command.Type
         , dependencies = [] : List Dependency.Type
         , removal = None Removal.Type
+        , migrations = [] : List Migration.Type
         }
     }

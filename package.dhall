@@ -16,6 +16,8 @@
 , Dependency = ./Dependency.dhall
 , RemovalStep = ./RemovalStep.dhall
 , Removal = ./Removal.dhall
+, MigrationOp = ./MigrationOp.dhall
+, Migration = ./Migration.dhall
 , Module = ./Module.dhall
 , Recipe = ./Recipe.dhall
 }

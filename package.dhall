@@ -20,4 +20,5 @@
 , Migration = ./Migration.dhall
 , Module = ./Module.dhall
 , Recipe = ./Recipe.dhall
+, Blueprint = ./Blueprint.dhall
 }

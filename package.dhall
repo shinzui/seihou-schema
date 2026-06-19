@@ -7,7 +7,6 @@
 --   in S.Module::{ name = "my-module"
 --                , steps = [ S.Step::{ strategy = "template", src = "foo.tpl", dest = "foo" } ]
 --                }
-
 { VarDecl = ./VarDecl.dhall
 , VarExport = ./VarExport.dhall
 , Prompt = ./Prompt.dhall
@@ -18,7 +17,9 @@
 , Removal = ./Removal.dhall
 , MigrationOp = ./MigrationOp.dhall
 , Migration = ./Migration.dhall
+, CommandVar = ./CommandVar.dhall
 , Module = ./Module.dhall
 , Recipe = ./Recipe.dhall
 , Blueprint = ./Blueprint.dhall
+, AgentPrompt = ./AgentPrompt.dhall
 }

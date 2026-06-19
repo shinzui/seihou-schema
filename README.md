@@ -24,3 +24,8 @@ The package exports record types with defaults for use with Dhall's record compl
 - `Step` -- Generation step
 - `Command` -- Command execution
 - `Dependency` -- Module dependency
+- `MigrationOp` -- Module migration operation
+- `Migration` -- Module version migration
+- `CommandVar` -- Command-derived variable
+- `Blueprint` -- Agent-driven scaffolding definition
+- `AgentPrompt` -- Reusable agent-session prompt definition

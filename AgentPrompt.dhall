@@ -14,6 +14,11 @@ let Prompt = ./Prompt.dhall
 
 let CommandVar = ./CommandVar.dhall
 
+let PromptGuidance =
+      { Type = { title : Text, body : Text, when : Optional Text }
+      , default = { when = None Text }
+      }
+
 let PromptFile =
       { Type = { src : Text, description : Optional Text }
       , default.description = None Text
@@ -36,6 +41,7 @@ in  { Type =
         , vars : List VarDecl.Type
         , prompts : List Prompt.Type
         , commandVars : List CommandVar.Type
+        , guidance : List PromptGuidance.Type
         , files : List PromptFile.Type
         , allowedTools : Optional (List Text)
         , tags : List Text
@@ -47,11 +53,13 @@ in  { Type =
       , vars = [] : List VarDecl.Type
       , prompts = [] : List Prompt.Type
       , commandVars = [] : List CommandVar.Type
+      , guidance = [] : List PromptGuidance.Type
       , files = [] : List PromptFile.Type
       , allowedTools = None (List Text)
       , tags = [] : List Text
       , launch = None Launch.Type
       }
+    , PromptGuidance
     , PromptFile
     , Launch
     }

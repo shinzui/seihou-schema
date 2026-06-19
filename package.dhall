@@ -22,4 +22,5 @@
 , Recipe = ./Recipe.dhall
 , Blueprint = ./Blueprint.dhall
 , AgentPrompt = ./AgentPrompt.dhall
+, PromptGuidance = (./AgentPrompt.dhall).PromptGuidance
 }

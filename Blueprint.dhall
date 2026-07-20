@@ -17,6 +17,8 @@ let Prompt = ./Prompt.dhall
 
 let Dependency = ./Dependency.dhall
 
+let BlueprintMigration = ./BlueprintMigration.dhall
+
 let BlueprintFile =
       { Type = { src : Text, description : Optional Text }
       , default = { description = None Text }
@@ -33,6 +35,7 @@ in  { Type =
         , files : List BlueprintFile.Type
         , allowedTools : Optional (List Text)
         , tags : List Text
+        , migrations : List BlueprintMigration.Type
         }
     , default =
         { version = None Text
@@ -43,6 +46,7 @@ in  { Type =
         , files = [] : List BlueprintFile.Type
         , allowedTools = None (List Text)
         , tags = [] : List Text
+        , migrations = [] : List BlueprintMigration.Type
         }
     , BlueprintFile = BlueprintFile
     }

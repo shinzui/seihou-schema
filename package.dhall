@@ -17,6 +17,7 @@
 , Removal = ./Removal.dhall
 , MigrationOp = ./MigrationOp.dhall
 , Migration = ./Migration.dhall
+, BlueprintMigration = ./BlueprintMigration.dhall
 , CommandVar = ./CommandVar.dhall
 , Module = ./Module.dhall
 , Recipe = ./Recipe.dhall

@@ -4,6 +4,10 @@
 -- body, optional typed variables, optional command-derived variables, and
 -- optional reference files without implying scaffolding semantics.
 --
+-- An agent prompt may also declare optional launch preferences (`launch`)
+-- naming the agent provider, model, and reasoning effort its prompt was
+-- written for. See ./Launch.dhall.
+--
 -- Required fields (no default): name, prompt
 -- Usage:
 --   let S = ./package.dhall
@@ -24,14 +28,7 @@ let PromptFile =
       , default.description = None Text
       }
 
-let Launch =
-      { Type =
-          { provider : Optional Text
-          , mode : Optional Text
-          , model : Optional Text
-          }
-      , default = { provider = None Text, mode = None Text, model = None Text }
-      }
+let Launch = ./Launch.dhall
 
 in  { Type =
         { name : Text

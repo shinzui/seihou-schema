@@ -28,8 +28,38 @@ The package exports record types with defaults for use with Dhall's record compl
 - `Migration` -- Module version migration
 - `BlueprintMigration` -- Agent-guided library upgrade edge
 - `CommandVar` -- Command-derived variable
+- `Launch` -- Agent launch preferences declared by an artifact
 - `Blueprint` -- Agent-driven scaffolding definition
 - `AgentPrompt` -- Reusable agent-session prompt definition
+
+## Declaring launch settings
+
+A blueprint or agent prompt can declare the agent provider, model, and
+reasoning effort its prompt was written for:
+
+```dhall
+in  S.Blueprint::{
+    , name = "payments-service"
+    , prompt = ./prompt.md as Text
+    , launch = Some S.Launch::{
+      , provider = Some "claude-cli"
+      , model = Some "claude-opus-4-8"
+      , effort = Some "max"
+      }
+    }
+```
+
+Every field is optional; an omitted field means "let the invoking user's
+configuration decide". `provider` is one of `claude-cli`, `codex-cli`,
+`anthropic`, `openai`; `effort` is one of `minimal`, `low`, `medium`, `high`,
+`xhigh`, `max`; `model` is free-form. A fourth field, `mode`, is reserved and
+currently ignored by the runner.
+
+Declared values override the invoking user's configuration files (the
+project-local `.seihou/config.dhall` and the global `~/.config/seihou/config.dhall`,
+per-command keys included) but lose to a `--provider` / `--model` / `--effort`
+flag and to the `SEIHOU_AGENT_*` environment variables. The blueprint author
+sets the sane default; the person at the keyboard keeps the last word.
 
 ## Blueprint library migrations
 

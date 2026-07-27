@@ -6,6 +6,12 @@
 -- decides what files are written. Blueprints cannot be directly run
 -- via `seihou run`; use `seihou agent run BLUEPRINT` instead (EP-31).
 --
+-- A blueprint may also declare optional launch preferences (`launch`) naming
+-- the agent provider, model, and reasoning effort its prompt was written for.
+-- Declared values override the invoking user's configuration files but lose to
+-- a command-line flag or a SEIHOU_AGENT_* environment variable. See
+-- ./Launch.dhall.
+--
 -- Required fields (no default): name, prompt
 -- Usage:
 --   let S = ./package.dhall
@@ -18,6 +24,8 @@ let Prompt = ./Prompt.dhall
 let Dependency = ./Dependency.dhall
 
 let BlueprintMigration = ./BlueprintMigration.dhall
+
+let Launch = ./Launch.dhall
 
 let BlueprintFile =
       { Type = { src : Text, description : Optional Text }
@@ -36,6 +44,7 @@ in  { Type =
         , allowedTools : Optional (List Text)
         , tags : List Text
         , migrations : List BlueprintMigration.Type
+        , launch : Optional Launch.Type
         }
     , default =
         { version = None Text
@@ -47,6 +56,8 @@ in  { Type =
         , allowedTools = None (List Text)
         , tags = [] : List Text
         , migrations = [] : List BlueprintMigration.Type
+        , launch = None Launch.Type
         }
     , BlueprintFile = BlueprintFile
+    , Launch = Launch
     }

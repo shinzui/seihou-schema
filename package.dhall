@@ -17,6 +17,7 @@
 , Removal = ./Removal.dhall
 , MigrationOp = ./MigrationOp.dhall
 , Migration = ./Migration.dhall
+, EntailedEdge = ./EntailedEdge.dhall
 , BlueprintMigration = ./BlueprintMigration.dhall
 , CommandVar = ./CommandVar.dhall
 , Launch = ./Launch.dhall

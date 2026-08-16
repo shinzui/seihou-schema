@@ -26,6 +26,7 @@ The package exports record types with defaults for use with Dhall's record compl
 - `Dependency` -- Module dependency
 - `MigrationOp` -- Module migration operation
 - `Migration` -- Module version migration
+- `EntailedEdge` -- Reference to an exact migration edge of another blueprint
 - `BlueprintMigration` -- Agent-guided library upgrade edge
 - `CommandVar` -- Command-derived variable
 - `Launch` -- Agent launch preferences declared by an artifact
@@ -90,3 +91,38 @@ Seihou selects in-window edges in ascending `from` order and permits version
 gaps. The consumer supplies the current and target versions explicitly with
 `seihou agent migrate my-library --from 1.0.0 --to 3.0.0`. These prompts guide
 an agent; they are distinct from deterministic module `MigrationOp` records.
+
+## Entailed edges across a library cohort
+
+When a breaking change reaches consumers through an intermediary library, the
+consumer knows only the version of the library they actually declare. An edge
+can therefore name exact edges of *other* blueprints that crossing it requires:
+
+```dhall
+in  S.Blueprint::{
+    , name = "keiro-upgrade"
+    , version = Some "3.0.0"
+    , prompt = ./prompt.md as Text
+    , migrations =
+      [ S.BlueprintMigration::{
+        , from = "2.4.0"
+        , to = "3.0.0"
+        , prompt = ./migrations/2-4-to-3.md as Text
+        , entails =
+          [ S.EntailedEdge::{
+            , blueprint = "kiroku-upgrade"
+            , from = "1.9.0"
+            , to = "2.0.0"
+            }
+          ]
+        }
+      ]
+    }
+```
+
+`seihou agent migrate keiro-upgrade --from 2.4.0 --to 3.0.0` then runs kiroku's
+`1.9.0 -> 2.0.0` edge first — with kiroku's own reference files, allowed tools,
+and variables — and keiro's edge second. Expansion is recursive, so an entailed
+edge may entail further edges; a cycle is an authoring error. The entailed
+edge's receipt is recorded under `kiroku-upgrade`, so a project that also runs
+`seihou agent migrate kiroku-upgrade` directly crosses that edge exactly once.

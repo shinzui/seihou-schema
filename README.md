@@ -88,9 +88,35 @@ in  S.Blueprint::{
 ```
 
 Seihou selects in-window edges in ascending `from` order and permits version
-gaps. The consumer supplies the current and target versions explicitly with
-`seihou agent migrate my-library --from 1.0.0 --to 3.0.0`. These prompts guide
-an agent; they are distinct from deterministic module `MigrationOp` records.
+gaps. The consumer can supply the window explicitly with
+`seihou agent migrate my-library --from 1.0.0 --to 3.0.0`, or let seihou infer
+it — see [Declaring a version probe](#declaring-a-version-probe). These prompts
+guide an agent; they are distinct from deterministic module `MigrationOp`
+records.
+
+## Declaring a version probe
+
+`versionProbe` is a shell command seihou runs in the project directory to
+discover which version of the library that project currently declares. Its
+standard output — trimmed, last non-empty line — must be a dotted numeric
+version:
+
+```dhall
+in  S.Blueprint::{
+    , name = "my-library"
+    , version = Some "3.0.0"
+    , prompt = ./prompt.md as Text
+    , versionProbe = Some "jq -r .dependencies.my-library package.json"
+    }
+```
+
+It supplies the default `--to` for `seihou agent migrate`, because the normal
+workflow is to bump the dependency and then migrate the source up to it. Seihou
+stays language-agnostic by never guessing the command: only the blueprint's
+author knows where the version lives in their ecosystem.
+
+A probe must be read-only and fast, and must work from the project root. It runs
+under `--debug` too, so debug planning matches a real run.
 
 ## Entailed edges across a library cohort
 

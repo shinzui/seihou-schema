@@ -12,6 +12,17 @@
 -- a command-line flag or a SEIHOU_AGENT_* environment variable. See
 -- ./Launch.dhall.
 --
+-- `versionProbe` is a shell command seihou runs in the project directory to
+-- discover which version of the library this project currently declares. Its
+-- standard output, trimmed, must be a dotted numeric version. It supplies the
+-- default `--to` for `seihou agent migrate`: the normal workflow is to bump the
+-- dependency and then migrate the source up to it, so the version the project
+-- now declares is the target. Seihou stays language-agnostic by never guessing
+-- the command — only the blueprint's author knows where the version lives.
+--
+--   versionProbe = Some "jq -r .dependencies.keiro package.json"
+--   versionProbe = Some "nix eval --raw .#keiroVersion"
+--
 -- Required fields (no default): name, prompt
 -- Usage:
 --   let S = ./package.dhall
@@ -45,6 +56,7 @@ in  { Type =
         , tags : List Text
         , migrations : List BlueprintMigration.Type
         , launch : Optional Launch.Type
+        , versionProbe : Optional Text
         }
     , default =
         { version = None Text
@@ -57,6 +69,7 @@ in  { Type =
         , tags = [] : List Text
         , migrations = [] : List BlueprintMigration.Type
         , launch = None Launch.Type
+        , versionProbe = None Text
         }
     , BlueprintFile = BlueprintFile
     , Launch = Launch

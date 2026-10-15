@@ -152,3 +152,7 @@ and variables — and keiro's edge second. Expansion is recursive, so an entaile
 edge may entail further edges; a cycle is an authoring error. The entailed
 edge's receipt is recorded under `kiroku-upgrade`, so a project that also runs
 `seihou agent migrate kiroku-upgrade` directly crosses that edge exactly once.
+
+## Seed steps
+
+`Step::{ strategy = "template", src = "CHANGELOG.md.tpl", dest = "CHANGELOG.md", lifecycle = Some "seed" }` declares a file created once and handed to the project. Omitted lifecycle means managed. Seeds support copy, template, and dhall-text with no patch; runtime seed behavior requires a supporting Seihou release.

@@ -1,5 +1,6 @@
 -- | Generation step — describes a file to generate.
 --
+-- lifecycle: omitted/managed outputs stay managed; seed outputs are handed to the project.
 -- Required fields (no default): strategy, src, dest
 -- Usage: Step::{ strategy = "template", src = "README.md.tpl", dest = "README.md" }
 
@@ -8,10 +9,12 @@
     , src : Text
     , dest : Text
     , when : Optional Text
+    , lifecycle : Optional Text
     , patch : Optional Text
     }
 , default =
     { when = None Text
+    , lifecycle = None Text
     , patch = None Text
     }
 }

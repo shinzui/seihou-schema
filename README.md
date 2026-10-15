@@ -156,3 +156,7 @@ edge's receipt is recorded under `kiroku-upgrade`, so a project that also runs
 ## Seed steps
 
 `Step::{ strategy = "template", src = "CHANGELOG.md.tpl", dest = "CHANGELOG.md", lifecycle = Some "seed" }` declares a file created once and handed to the project. Omitted lifecycle means managed. Seeds support copy, template, and dhall-text with no patch; runtime seed behavior requires a supporting Seihou release.
+
+## Checkout directory links
+
+`Step::{ strategy = "symlink", src = "config/editor", dest = ".editor-local/config", lifecycle = Some "checkout" }` declares a directory link from a consuming project's own source directory. It has no patch. Source and destination must be canonical project-relative paths outside `.git` and `.seihou` and must not overlap. Ignore checkout destinations in Git. Applying the module records portable intent; `seihou sync` rebuilds it in each clone without installed modules.

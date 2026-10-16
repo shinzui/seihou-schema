@@ -160,3 +160,14 @@ edge's receipt is recorded under `kiroku-upgrade`, so a project that also runs
 ## Checkout directory links
 
 `Step::{ strategy = "symlink", src = "config/editor", dest = ".editor-local/config", lifecycle = Some "checkout" }` declares a directory link from a consuming project's own source directory. It has no patch. Source and destination must be canonical project-relative paths outside `.git` and `.seihou` and must not overlap. Ignore checkout destinations in Git. Applying the module records portable intent; `seihou sync` rebuilds it in each clone without installed modules.
+
+
+Commands use `S.Command::{ action = S.Command.Action.Apply "echo applied" }` or
+`S.Command::{ action = S.Command.Action.Checkout "mkdir -p .local/setup" }`.
+Checkout actions declare repeatable setup recorded during application and executed
+in each receiving checkout by `seihou sync`. They run with user permissions, may
+use tools/network, must be repeatable and must keep intended writes outside
+managed/tracked state. Working directories are real project-relative directories.
+`Removal.commands` permits Apply actions only; Seihou validates that restriction.
+New action records require a supporting runtime. Older runtimes reject the missing
+legacy `run` field rather than silently treating checkout setup as application work.

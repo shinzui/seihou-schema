@@ -171,3 +171,21 @@ managed/tracked state. Working directories are real project-relative directories
 `Removal.commands` permits Apply actions only; Seihou validates that restriction.
 New action records require a supporting runtime. Older runtimes reject the missing
 legacy `run` field rather than silently treating checkout setup as application work.
+
+## Cross-registry dependencies
+
+A dependency can identify its supplying Git registry:
+
+```dhall
+S.Dependency::{ module = "git-init", source = Some "https://github.com/shinzui/seihou-modules.git" }
+```
+
+`source` defaults to `None Text`, meaning the registry containing the declaration
+at installation time. The field is shared by recipe members, module dependencies,
+and blueprint base modules. Keep published sources as portable literal Git URLs;
+variable bindings remain generation inputs. Upgrade to a compatible Seihou executable
+before adopting this schema. Legacy record and bare-text dependencies still decode.
+
+Developers install a selected recipe with `seihou install SOURCE --module RECIPE`,
+then run `seihou run RECIPE`. Install acquires only its complete required module
+closure. Run and dry-run remain local. Reinstalling repairs older incomplete installs.

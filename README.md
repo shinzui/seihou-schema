@@ -189,3 +189,48 @@ before adopting this schema. Legacy record and bare-text dependencies still deco
 Developers install a selected recipe with `seihou install SOURCE --module RECIPE`,
 then run `seihou run RECIPE`. Install acquires only its complete required module
 closure. Run and dry-run remain local. Reinstalling repairs older incomplete installs.
+
+## Recipe extension (candidate CLI support)
+
+A recipe can name one base and specialize its global literal bindings:
+
+```dhall
+let S = ./package.dhall
+in S.Recipe::{
+   , name = "service-with-policy"
+   , extends = Some S.RecipeReference::{
+     , recipe = "service"
+     , source = Some "https://example.com/service-registry.git"
+     , versionRange = Some { minimum = "1.0", before = "2.0" }
+     }
+   , modules = [] : List S.Dependency.Type
+   , moduleOverrides =
+     [ S.RecipeModuleOverride::{
+       , module = "git-init"
+       , vars = [ { name = "git.githubOwner", value = "organization" } ]
+       }
+     ]
+   }
+```
+
+A root needs a member; a derived recipe may add none. Expansion keeps the oldest
+base's primary member, adds unique members in order, and executes the composition
+once. An override changes supplied literal keys on one inherited member and never
+adds an executable. Bindings remain global by variable name. Descendant literals
+win over ancestor literals; a declaration default does not replace a literal.
+Conflicting literals within a derived layer must be corrected by the author.
+
+Repeated declarations must agree on type, requiredness and validation. A child may
+supply a new default or description. New prompts append; `promptOverrides` replaces
+an inherited target in place. Conditions see the merged recipe declarations.
+
+A missing source selects the declaring registry during installation. The optional
+interval checks the selected source's default-branch HEAD; it does not search tags
+for an older match. The lower bound is inclusive, the upper bound exclusive, and
+numeric versions compare with trailing-zero equivalence. An unconstrained,
+unversioned base cannot provide numeric stale-version comparison.
+
+Descriptor-only validation does not fetch or verify a base. Full composition checks
+belong to acquisition and local chain expansion. These fields require the recipe
+extension CLI delivery tracked by
+mori://shinzui/seihou/plans/118-extend-recipes-through-a-single-origin-aware-base.

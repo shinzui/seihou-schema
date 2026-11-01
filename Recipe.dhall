@@ -13,6 +13,10 @@ let VarDecl = ./VarDecl.dhall
 
 let Prompt = ./Prompt.dhall
 
+let RecipeReference = ./RecipeReference.dhall
+
+let RecipeModuleOverride = ./RecipeModuleOverride.dhall
+
 in  { Type =
         { name : Text
         , version : Optional Text
@@ -20,11 +24,17 @@ in  { Type =
         , modules : List Dependency.Type
         , vars : List VarDecl.Type
         , prompts : List Prompt.Type
+        , extends : Optional RecipeReference.Type
+        , moduleOverrides : List RecipeModuleOverride.Type
+        , promptOverrides : List Prompt.Type
         }
     , default =
         { version = None Text
         , description = None Text
         , vars = [] : List VarDecl.Type
         , prompts = [] : List Prompt.Type
+        , extends = None RecipeReference.Type
+        , moduleOverrides = [] : List RecipeModuleOverride.Type
+        , promptOverrides = [] : List Prompt.Type
         }
     }

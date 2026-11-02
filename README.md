@@ -234,3 +234,15 @@ Descriptor-only validation does not fetch or verify a base. Full composition che
 belong to acquisition and local chain expansion. These fields require the recipe
 extension CLI delivery tracked by
 mori://shinzui/seihou/plans/118-extend-recipes-through-a-single-origin-aware-base.
+
+## Conditional removal steps
+
+`RemovalStep.when` accepts the same expression grammar as generation steps. Its default is
+`None Text`. Removal evaluates it against the selected instance's recorded resolved inputs,
+so a composed scaffold can suppress base starter generation and its matching removal effects.
+Older schema records without `when` retain unconditional behavior. Upgrade the runtime before
+publishing descriptors using this field.
+
+```dhall
+S.RemovalStep::{ action = "remove-file", dest = "package.json", when = Some "Eq bun.starter-files true" }
+```

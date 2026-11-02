@@ -2,6 +2,7 @@
 --
 -- action: "remove-file" | "remove-section" | "rewrite-file"
 -- dest: target file path (supports {{var}} placeholders)
+-- when: optional expression evaluated against this instance's recorded resolved variables
 -- src: for rewrite-file, path to a Dhall function in files/
 --
 -- Required fields (no default): action, dest
@@ -11,8 +12,10 @@
     { action : Text
     , dest : Text
     , src : Optional Text
+    , when : Optional Text
     }
 , default =
     { src = None Text
+    , when = None Text
     }
 }

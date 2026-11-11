@@ -296,3 +296,18 @@ publishing descriptors using this field.
 ```dhall
 S.RemovalStep::{ action = "remove-file", dest = "package.json", when = Some "Eq bun.starter-files true" }
 ```
+
+## Exact line-removal migrations
+
+`MigrationOp.RemoveLine { path = ".gitignore", line = ".envrc" }` removes all
+exact matching logical lines. Remaining LF/CRLF endings and whitespace are
+preserved. A missing file or absent match is a no-op. The line must be nonempty
+and contain no newline. The target must be a project-relative regular file,
+without symlink components, and must not be a protected seed or control path.
+
+This extends the migration union; authors must use a Seihou CLI release that
+supports `RemoveLine`. Existing five-operation unions remain supported by the
+new CLI, while older CLIs cannot decode the extended union. Deterministic text
+cleanup should use this operation so managed update can preview it accurately;
+`RunCommand` remains available for opaque commands whose unexpected drift is
+checked after execution.

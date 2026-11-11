@@ -32,6 +32,55 @@ The package exports record types with defaults for use with Dhall's record compl
 - `Launch` -- Agent launch preferences declared by an artifact
 - `Blueprint` -- Agent-driven scaffolding definition
 - `AgentPrompt` -- Reusable agent-session prompt definition
+- `Judgement` -- User-defined yes/no checks over staged changes or a commit range
+- `Check` -- One judgement question with its concern direction, enforcement and thresholds
+- `FindingCategory` -- A category a check's findings may use, with the author's severity
+- `JudgementEvidence` -- Evidence scopes and path filters a judgement may inspect
+- `JudgementLimits` -- Coverage, attempt, timeout and finding limits for one review
+- `Answer`, `Enforcement`, `Severity`, `EvidenceScope`, `DeterministicCheck` -- Closed choices used by judgements
+
+## Declaring a judgement
+
+A `judgement.dhall` file holds a list of yes/no checks that `seihou check`
+asks a model about the staged changes (or a commit range) before a commit:
+
+```dhall
+in  S.Judgement::{
+    , name = "customer-data-review"
+    , version = Some "1.0.0"
+    , instructions = "Review fixtures, logs, and documentation."
+    , checks =
+      [ S.Check::{
+        , name = "real-customer-data"
+        , question = "Does this change add information about a real customer?"
+        , categories =
+          [ S.FindingCategory::{ name = "customer-record", severity = S.Severity.High } ]
+        , blockAt = 0.5
+        , passAt = 0.1
+        }
+      , S.Check::{
+        , name = "undocumented-export"
+        , question = "Do the privacy notes mention every data export this change adds?"
+        , concernWhen = S.Answer.No
+        , enforcement = S.Enforcement.Advisory
+        }
+      ]
+    }
+```
+
+`concernWhen` says which answer is the problem (yes by default). Every
+threshold applies to the probability of that concern, so a higher number is
+always worse: at or above `blockAt` the check blocks, at or below `passAt` it
+may pass, and in between it needs human review. `gateBlockAt`/`gatePassAt`
+are the same pair for an optional judgment-only gate, and `useGate = False`
+opts a check out of it. A finding blocks when its category's severity is at
+or above the check's `blockingSeverity` (high by default). The probabilities
+are stated by the model; they are not calibrated measurements.
+
+`deterministicChecks = [ S.DeterministicCheck.SecretScan ]` adds a local
+secret scan whose findings always block. `evidence` narrows the scopes and
+paths a judgement reads, and `limits` bounds file size, chunking, attempts,
+timeout and the number of findings.
 
 ## Declaring launch settings
 

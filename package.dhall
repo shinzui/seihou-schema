@@ -28,4 +28,14 @@
 , Blueprint = ./Blueprint.dhall
 , AgentPrompt = ./AgentPrompt.dhall
 , PromptGuidance = (./AgentPrompt.dhall).PromptGuidance
+, Judgement = ./Judgement.dhall
+, Check = (./Judgement.dhall).Check
+, FindingCategory = (./Judgement.dhall).FindingCategory
+, JudgementEvidence = (./Judgement.dhall).Evidence
+, JudgementLimits = (./Judgement.dhall).Limits
+, Answer = (./Judgement.dhall).Answer
+, Enforcement = (./Judgement.dhall).Enforcement
+, Severity = (./Judgement.dhall).Severity
+, EvidenceScope = (./Judgement.dhall).EvidenceScope
+, DeterministicCheck = (./Judgement.dhall).DeterministicCheck
 }

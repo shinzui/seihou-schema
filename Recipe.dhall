@@ -17,6 +17,8 @@ let RecipeReference = ./RecipeReference.dhall
 
 let RecipeModuleOverride = ./RecipeModuleOverride.dhall
 
+let JudgementRef = ./JudgementRef.dhall
+
 in  { Type =
         { name : Text
         , version : Optional Text
@@ -27,6 +29,7 @@ in  { Type =
         , extends : Optional RecipeReference.Type
         , moduleOverrides : List RecipeModuleOverride.Type
         , promptOverrides : List Prompt.Type
+        , judgements : List JudgementRef.Type
         }
     , default =
         { version = None Text
@@ -36,5 +39,6 @@ in  { Type =
         , extends = None RecipeReference.Type
         , moduleOverrides = [] : List RecipeModuleOverride.Type
         , promptOverrides = [] : List Prompt.Type
+        , judgements = [] : List JudgementRef.Type
         }
     }

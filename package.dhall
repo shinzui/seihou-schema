@@ -29,6 +29,7 @@
 , AgentPrompt = ./AgentPrompt.dhall
 , PromptGuidance = (./AgentPrompt.dhall).PromptGuidance
 , Judgement = ./Judgement.dhall
+, JudgementRef = ./JudgementRef.dhall
 , Check = (./Judgement.dhall).Check
 , FindingCategory = (./Judgement.dhall).FindingCategory
 , JudgementEvidence = (./Judgement.dhall).Evidence

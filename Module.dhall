@@ -26,6 +26,8 @@ let Removal = ./Removal.dhall
 
 let Migration = ./Migration.dhall
 
+let JudgementRef = ./JudgementRef.dhall
+
 in  { Type =
         { name : Text
         , version : Optional Text
@@ -38,6 +40,7 @@ in  { Type =
         , dependencies : List Dependency.Type
         , removal : Optional Removal.Type
         , migrations : List Migration.Type
+        , judgements : List JudgementRef.Type
         }
     , default =
         { version = None Text
@@ -50,5 +53,6 @@ in  { Type =
         , dependencies = [] : List Dependency.Type
         , removal = None Removal.Type
         , migrations = [] : List Migration.Type
+        , judgements = [] : List JudgementRef.Type
         }
     }

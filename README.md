@@ -33,6 +33,7 @@ The package exports record types with defaults for use with Dhall's record compl
 - `Blueprint` -- Agent-driven scaffolding definition
 - `AgentPrompt` -- Reusable agent-session prompt definition
 - `Judgement` -- User-defined yes/no checks over staged changes or a commit range
+- `JudgementRef` -- A module's or recipe's reference to a judgement it activates
 - `Check` -- One judgement question with its concern direction, enforcement and thresholds
 - `FindingCategory` -- A category a check's findings may use, with the author's severity
 - `JudgementEvidence` -- Evidence scopes and path filters a judgement may inspect
